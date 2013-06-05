@@ -19,6 +19,9 @@ $(function(){
       args.splice(0, 1);
       console.log(command, args);
       client.send_command(command, args, function(err, reply){
+	if(err){
+	  alert(err);
+	}
 	$('input').focus().val('');
 	console.log(err, reply);
 	// $('pre').html(reply);
