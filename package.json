@@ -1,0 +1,11 @@
+{
+  "name": "RedisViewer",
+  "description": "Redis GUI Client.",
+  "version": "0.1",
+  "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "width": 660,
+    "height": 500
+  }
+}
