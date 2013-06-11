@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="span3 clearfix" ng-controller="KeysCtrl">
+      <div>
+	<div class="btn-group">
+	  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+	    Change DB(#{{status.db}})
+	    <span class="caret"></span>
+	  </a>
+	  <ul class="dropdown-menu">
+	    <li ng-repeat="db in dbs">
+	      <a href="javascript:;" ng-click="showdb(db)">#{{db}}</a>
+	    </li>
+	  </ul>
+	</div>
+      </div>
+      {{status.keys.length}} keys
+      <ul class="nav nav-tabs nav-stacked keys-sidebar">
+	<li ng-repeat="key in status.keys">
+	  <a href="javascript:;" class="ellipsis" title="{{key}}"><i class="icon-chevron-right"></i> 
+	    {{key.hash}}
+	    <br />
+	    {{key.type}}/
+            <span title="{{key.ttl}}second">{{key.ttl | ttl}}</span>
+
+	  </a>
+	</li>
+      </ul>
+    </div>
+
+    <div class="span9">
+      
+      <div ng-controller="CmdCtrl">
+	<input type="text" name="command" ng-model="cmd_str"/>
+	<br />
+	<button class="btn btn-primary" ng-click="send_command(cmd_str)">
+	  go!
+	</button>
+	<hr />
+	<pre>
+	  {{reply}}
+	</pre>
+      </div>
+    </div>
+  </div>
+</div>

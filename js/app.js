@@ -6,13 +6,16 @@ angular.module('myApp', [
   'myApp.services',
   'myApp.directives',
   'myApp.controllers'	
-]).run(["$rootScope", "redis", function($rootScope, redis) {
-  redis.connect();
-  $rootScope.redis = redis.status;
-  return $rootScope.db = redis.client;
-}]);
-  // .config(['$routeProvider', function($routeProvider) {
-  //   // $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
-  //   // $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
-  //   // $routeProvider.otherwise({redirectTo: '/view1'});
+])
+  .config(['$routeProvider', function($routeProvider) {
+    $routeProvider.when('/', {templateUrl: 'partials/main.html', controller: 'MainCtrl'});
+    // $routeProvider.when('/', {templateUrl: 'partials/connect.html', controller: 'ConnectCtrl'});
+    // $routeProvider.otherwise({redirectTo: '/'});
+  }])
+  // .run(["$rootScope", "redis", function($rootScope, redis) {
+  //   $rootScope.Redis = redis.Redis;
+  //   // redis.connect();
+  //   // $rootScope.redis = redis.status;
+  //   // return $rootScope.db = redis.client;
   // }]);
+

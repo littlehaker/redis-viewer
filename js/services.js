@@ -23,6 +23,9 @@ angular.module('myApp.services', [])
     this.status = {
       db: 0,
     };
+    // this.Redis = {
+    //   db: this.client
+    // };
     // return {
     //   // client: client,
     //   send_command: send_command,
