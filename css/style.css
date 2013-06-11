@@ -6,3 +6,10 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.break {
+  word-wrap:break-word;
+  word-break:break-all;
+}
+.table {
+  table-layout:fixed;
+}

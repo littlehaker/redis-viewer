@@ -9,7 +9,7 @@ var _ = require('lodash');
 
 // main controller
 function MainCtrl($scope, $dialog){
-
+  $scope.logs = [];
   $scope.showCollectDialog = function(){
     var d = $dialog.dialog({
       backdrop: true,
@@ -29,6 +29,15 @@ function MainCtrl($scope, $dialog){
   $scope.status = {
     db: 0
   };
+  
+  var type_cmd_map = {
+    string: 'get $key',
+    hash: 'hgetall $key',
+    set: 'smembers $key',
+    zset: 'zrange $key 0 -1',
+    list: 'lrance $key 0 -1'
+  }
+
   $scope.keys = function(){
     $scope.db.keys('*', function(err, keys){
       var type_promises = [];
@@ -50,7 +59,8 @@ function MainCtrl($scope, $dialog){
 	  objs.push({
 	    hash: keys[i],
 	    type: types[i],
-	    ttl: ttls[i]
+	    ttl: ttls[i],
+	    cmd: type_cmd_map[types[i]].replace('$key', keys[i])
 	  });
 	}
 	$scope.status.keys = objs;
@@ -58,8 +68,16 @@ function MainCtrl($scope, $dialog){
       });
     });
   };
+  // TODO: wrap send_command with a log info.
   $scope.send_command = function(cmd_str){
-    $scope.db.send_command(cmd_str, function(err, reply){
+    $scope.logs.push(cmd_str);
+    var args = cmd_str.split(' ');
+    var command = args[0];
+    args.splice(0, 1);
+    $scope.db.send_command(command, args, function(err, reply){
+      if(typeof reply === 'string'){
+	reply = [reply];
+      }
       $scope.reply = reply;
       $scope.$digest();
     });
