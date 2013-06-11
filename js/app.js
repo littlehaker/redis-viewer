@@ -8,7 +8,8 @@ angular.module('myApp', [
   'myApp.controllers'	
 ]).run(["$rootScope", "redis", function($rootScope, redis) {
   redis.connect();
-  return $rootScope.redis = redis;
+  $rootScope.redis = redis.status;
+  return $rootScope.db = redis.client;
 }]);
   // .config(['$routeProvider', function($routeProvider) {
   //   // $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
