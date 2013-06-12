@@ -35,7 +35,7 @@ function MainCtrl($scope, $dialog){
     string: 'get $key',
     hash: 'hgetall $key',
     set: 'smembers $key',
-    zset: 'zrange $key 0 -1',
+    zset: 'zrange $key 0 -1 withscores',
     list: 'lrance $key 0 -1'
   };
 
@@ -79,6 +79,7 @@ function MainCtrl($scope, $dialog){
       if(typeof reply === 'string'){
 	reply = [reply];
       }
+      console.log(reply);
       $scope.reply = reply;
       $scope.$digest();
     });
