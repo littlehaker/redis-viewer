@@ -9,6 +9,7 @@ var _ = require('lodash');
 
 // main controller
 function MainCtrl($scope, $dialog){
+  $scope.wildcard = '*';
   $scope.logs = [];
   $scope.showCollectDialog = function(){
     var d = $dialog.dialog({
@@ -23,7 +24,7 @@ function MainCtrl($scope, $dialog){
       db.on('error', function(err){
 	alert(err);
       });
-      $scope.keys();
+      $scope.keys('*');
     });
   };
   $scope.status = {
@@ -36,10 +37,10 @@ function MainCtrl($scope, $dialog){
     set: 'smembers $key',
     zset: 'zrange $key 0 -1',
     list: 'lrance $key 0 -1'
-  }
+  };
 
-  $scope.keys = function(){
-    $scope.db.keys('*', function(err, keys){
+  $scope.keys = function(wildcard){
+    $scope.db.keys(wildcard, function(err, keys){
       var type_promises = [];
       _.forEach(keys, function(key){
 	type_promises.push(Q.ninvoke($scope.db, 'type', key));
@@ -85,7 +86,9 @@ function MainCtrl($scope, $dialog){
   $scope.showdb = function showdb(db){
     $scope.db.select(db, function(err, reply){
       $scope.status.db = db;
-      $scope.keys();
+      $scope.wildcard = '*';
+      $scope.$digest();
+      $scope.keys('*');
     });
   };
   $scope.showCollectDialog();

@@ -14,6 +14,13 @@
 	  </ul>
 	</div>
       </div>
+      <form ng-submit="keys(wildcard)">
+	Keys: 
+	<input type="text" ng-model="wildcard" />
+        <button class="btn btn-primary">
+	  Go!
+        </button>
+      </form>
       {{status.keys.length}} keys
       <ul class="nav nav-tabs nav-stacked keys-sidebar">
 	<li ng-repeat="key in status.keys">
@@ -21,7 +28,7 @@
 	    {{key.hash}}
 	    <br />
 	    {{key.type}}/
-            <span title="{{key.ttl}}second">{{key.ttl | ttl}}</span>
+            <span title="{{key.ttl}} second">{{key.ttl | ttl}}</span>
 
 	  </a>
 	</li>
@@ -31,8 +38,8 @@
     <div class="span9">
       <div class="tabbable">
 	<ul class="nav nav-tabs">
-	  <li class="active"><a href="#tabResult" data-toggle="tab">Section 1</a></li>
-	  <li><a href="#tabLog" data-toggle="tab">Section 2</a></li>
+	  <li class="active"><a href="#tabResult" data-toggle="tab">Results</a></li>
+	  <li><a href="#tabLog" data-toggle="tab">Logs</a></li>
 	</ul>
 	<div class="tab-content">
 	  <div class="tab-pane active" id="tabResult" ng-controller="CmdCtrl">
