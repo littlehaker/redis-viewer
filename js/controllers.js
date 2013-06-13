@@ -36,7 +36,7 @@ function MainCtrl($scope, $dialog){
     hash: 'hgetall $key',
     set: 'smembers $key',
     zset: 'zrange $key 0 -1 withscores',
-    list: 'lrance $key 0 -1'
+    list: 'lrange $key 0 -1'
   };
 
   $scope.keys = function(wildcard){
