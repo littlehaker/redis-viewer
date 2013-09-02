@@ -2,27 +2,30 @@
 
 // Controllers
 
-angular.module('myApp.controllers', ['ui.bootstrap']);
+angular.module('RedisViewer.controllers', ['ui.bootstrap', 'ngProgress']);
 var Redis = require('redis');
 var Q = require('q');
 var _ = require('lodash');
 
 // main controller
-function MainCtrl($scope, $dialog){
+
+function MainCtrl($scope, $dialog, progressbar) {
+  progressbar.color('#29d');
+
   $scope.wildcard = '*';
   $scope.logs = [];
-  $scope.showCollectDialog = function(){
+  $scope.showCollectDialog = function() {
     var d = $dialog.dialog({
       backdrop: true,
       keyboard: false,
       backdropClick: false,
-      templateUrl:  'partials/connect.html', 
+      templateUrl: 'partials/connect.html',
       controller: 'ConnectDialogController'
     });
-    d.open().then(function(result){
+    d.open().then(function(result) {
       var db = $scope.db = Redis.createClient(result.port, result.host, result);
-      db.on('error', function(err){
-	alert(err);
+      db.on('error', function(err) {
+        alert(err);
       });
       $scope.keys('*');
     });
@@ -30,7 +33,7 @@ function MainCtrl($scope, $dialog){
   $scope.status = {
     db: 0
   };
-  
+
   var type_cmd_map = {
     string: 'get $key',
     hash: 'hgetall $key',
@@ -39,53 +42,57 @@ function MainCtrl($scope, $dialog){
     list: 'lrange $key 0 -1'
   };
 
-  $scope.keys = function(wildcard){
-    $scope.db.keys(wildcard, function(err, keys){
+  $scope.keys = function(wildcard) {
+    progressbar.start();
+    $scope.db.keys(wildcard, function(err, keys) {
       var type_promises = [];
-      _.forEach(keys, function(key){
-	type_promises.push(Q.ninvoke($scope.db, 'type', key));
+      _.forEach(keys, function(key) {
+        type_promises.push(Q.ninvoke($scope.db, 'type', key));
       });
       var ttl_promises = [];
-      _.forEach(keys, function(key){
-	ttl_promises.push(Q.ninvoke($scope.db, 'ttl', key));
+      _.forEach(keys, function(key) {
+        ttl_promises.push(Q.ninvoke($scope.db, 'ttl', key));
       });
       Q.all([
-	Q.all(type_promises),
-	Q.all(ttl_promises)
-      ]).done(function(results){
-	var types = results[0];
-	var ttls = results[1];
-	var objs = [];
-	for(var i in keys){
-	  objs.push({
-	    hash: keys[i],
-	    type: types[i],
-	    ttl: ttls[i],
-	    cmd: type_cmd_map[types[i]].replace('$key', keys[i])
-	  });
-	}
-	$scope.status.keys = objs;
-	$scope.$digest();
+        Q.all(type_promises),
+        Q.all(ttl_promises)
+      ]).done(function(results) {
+        var types = results[0];
+        var ttls = results[1];
+        var objs = [];
+        for (var i in keys) {
+          objs.push({
+            hash: keys[i],
+            type: types[i],
+            ttl: ttls[i],
+            cmd: type_cmd_map[types[i]].replace('$key', keys[i])
+          });
+        }
+        $scope.status.keys = objs;
+        $scope.$digest();
+        progressbar.complete();
       });
     });
   };
   // TODO: wrap send_command with a log info.
-  $scope.send_command = function(cmd_str){
+  $scope.send_command = function(cmd_str) {
+    progressbar.start();
     $scope.logs.push(cmd_str);
     var args = cmd_str.split(' ');
     var command = args[0];
     args.splice(0, 1);
-    $scope.db.send_command(command, args, function(err, reply){
-      if(typeof reply === 'string'){
-	reply = [reply];
+    $scope.db.send_command(command, args, function(err, reply) {
+      if (typeof reply === 'string') {
+        reply = [reply];
       }
       console.log(reply);
       $scope.reply = reply;
       $scope.$digest();
+      progressbar.complete();
     });
   };
-  $scope.showdb = function showdb(db){
-    $scope.db.select(db, function(err, reply){
+  $scope.showdb = function showdb(db) {
+    $scope.db.select(db, function(err, reply) {
       $scope.status.db = db;
       $scope.wildcard = '*';
       $scope.$digest();
@@ -96,21 +103,23 @@ function MainCtrl($scope, $dialog){
 }
 
 // the dialog is injected in the specified controller
-function ConnectDialogController($scope, dialog){
+
+function ConnectDialogController($scope, dialog) {
   $scope.conn_opts = {
     host: 'localhost',
     port: 6379
   };
-  $scope.close = function(result){
+  $scope.close = function(result) {
     dialog.close(result);
   };
 }
 
-function KeysCtrl($scope){
+function KeysCtrl($scope) {
   $scope.dbs = [0, 1, 2, 3];
 
 }
-function CmdCtrl(){}
+
+function CmdCtrl() {}
 // .controller('MainCtrl', ['$scope', 'redis', 'ui.bootstrap', function($scope, redis, $location) {
 //   // console.log(redis);
 //   // $scope.db = redis.client;
