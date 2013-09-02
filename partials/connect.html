@@ -6,17 +6,23 @@
     <div class="control-group">
       <label class="control-label" for="inputHost">Host</label>
       <div class="controls">
-	<input type="text" id="inputHost" placeholder="Host" ng-model="conn_opts.host">
+        <input type="text" id="inputHost" placeholder="Host" ng-model="conn_opts.host">
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="inputPort">Port</label>
       <div class="controls">
-	<input type="text" id="inputPort" placeholder="Port"  ng-model="conn_opts.port">
+        <input type="text" id="inputPort" placeholder="Port" ng-model="conn_opts.port">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="inputPassword">Password</label>
+      <div class="controls">
+        <input type="text" id="inputPassword" placeholder="Password" ng-model="conn_opts.password">
       </div>
     </div>
   </form>
 </div>
 <div class="modal-footer">
-  <button ng-click="close(conn_opts)" class="btn btn-primary" >Connect</button>
+  <button ng-click="close(conn_opts)" class="btn btn-primary">Connect</button>
 </div>

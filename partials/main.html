@@ -1,74 +1,79 @@
-<div class="container">
-  <div class="row">
-    <div class="span3 clearfix" ng-controller="KeysCtrl">
-      <div>
-	<div class="btn-group">
-	  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-	    Change DB(#{{status.db}})
-	    <span class="caret"></span>
-	  </a>
-	  <ul class="dropdown-menu">
-	    <li ng-repeat="db in dbs">
-	      <a href="javascript:;" ng-click="showdb(db)">#{{db}}</a>
-	    </li>
-	  </ul>
-	</div>
-      </div>
-      <form ng-submit="keys(wildcard)">
-	Keys: 
-	<input type="text" ng-model="wildcard" />
-        <button class="btn btn-primary">
-	  Go!
-        </button>
-      </form>
-      {{status.keys.length}} keys
-      <ul class="nav nav-tabs nav-stacked keys-sidebar">
-	<li ng-repeat="key in status.keys">
-	  <a href="javascript:;" class="ellipsis" title="{{key}}" ng-click="send_command(key.cmd)">
-	    {{key.hash}}
-	    <br />
-	    {{key.type}}/
-            <span title="{{key.ttl}} second">{{key.ttl | ttl}}</span>
-
-	  </a>
-	</li>
+<!-- <div class="container"> -->
+<!-- <div class="row"> -->
+<!-- <div class="span3 clearfix" ng-controller="KeysCtrl"> -->
+<div ng-controller="KeysCtrl" class="sidebar west clearfix">
+  <div>
+    <div class="btn-group">
+      <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+            Change DB(#{{status.db}})
+            <span class="caret"></span>
+          </a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="db in dbs">
+          <a href="javascript:;" ng-click="showdb(db)">#{{db}}</a>
+        </li>
       </ul>
     </div>
+  </div>
+  <form ng-submit="keys(wildcard)">
+    Keys:
+    <input type="text" ng-model="wildcard" />
+    <button class="btn btn-primary">
+      Go!
+    </button>
+  </form>
+    {{status.keys.length}} keys
+  <div class="keys">
+    <ul class="nav nav-tabs nav-stacked">
+      <li ng-repeat="key in status.keys">
+        <a href="javascript:;" class="ellipsis" title="{{key}}" ng-click="send_command(key.cmd)">
+        {{key.hash}}
+        <br />
+        {{key.type}}/
+              <span title="{{key.ttl}} second">{{key.ttl | ttl}}</span>
 
-    <div class="span9">
-      <div class="tabbable">
-	<ul class="nav nav-tabs">
-	  <li class="active"><a href="#tabResult" data-toggle="tab">Results</a></li>
-	  <li><a href="#tabLog" data-toggle="tab">Logs</a></li>
-	</ul>
-	<div class="tab-content">
-	  <div class="tab-pane active" id="tabResult" ng-controller="CmdCtrl">
-	    <input type="text" name="command" ng-model="cmd_str"/>
-	    <br />
-	    <button class="btn btn-primary" ng-click="send_command(cmd_str)">
-	      go!
-	    </button>
-	    <hr />
-	    <table class="table">
-              <thead>
-		<th width="100px">key/index</th>
-		<th>value</th>
-              </thead>
-	      <tbody>
-		<tr ng-repeat="(key, value) in reply">
-		  <td class="break">{{key}}</td>
-		  <td class="break" title="{{value}}">{{value}}</td>
-		</tr>
-	      </tbody>
-	    </table>
-	  </div>
-	  <div class="tab-pane" id="tabLog">
-            <div ng-repeat="log in logs">
-	      {{log}}
-            </div>
-	  </div>
-	</div>
+      </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- <div class="span9"> -->
+<div class="tabbable east">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tabResult" data-toggle="tab">Results</a>
+    </li>
+    <li><a href="#tabLog" data-toggle="tab">Logs</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tabResult" ng-controller="CmdCtrl">
+      <input type="text" name="command" ng-model="cmd_str" />
+      <br />
+      <button class="btn btn-primary" ng-click="send_command(cmd_str)">
+        Go!
+      </button>
+      <hr />
+      <table class="table">
+        <thead>
+          <th width="100px">key/index</th>
+          <th>value</th>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(key, value) in reply">
+            <td class="break">{{key}}</td>
+            <td class="break" title="{{value}}">{{value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane" id="tabLog">
+      <div ng-repeat="log in logs">
+        {{log}}
       </div>
     </div>
   </div>
 </div>
+<!-- </div> -->
+<!-- </div> -->
+<!-- </div> -->

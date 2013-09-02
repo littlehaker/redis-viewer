@@ -1,11 +1,33 @@
 'use strict';
 
-// Controllers
-
-angular.module('RedisViewer.controllers', ['ui.bootstrap', 'ngProgress']);
 var Redis = require('redis');
 var Q = require('q');
 var _ = require('lodash');
+
+// Controllers
+angular.module('RedisViewer.controllers', [
+  'ui.bootstrap',
+  'ngProgress'
+]).controller('MenuCtrl', ['$scope', '$location',
+  function($scope, $location) {
+    $scope.inPath = function(path) {
+      var cur_path = $location.path().substr(0, path.length);
+      if (cur_path == path) {
+        if ($location.path().substr(0).length > 1 && path.length == 1)
+          return false;
+        else
+          return true;
+      } else {
+        return false;
+      }
+    }
+  }
+]).controller('NavCtrl', ['$scope',
+  function($scope) {
+
+  }
+])
+
 
 // main controller
 
@@ -27,7 +49,15 @@ function MainCtrl($scope, $dialog, progressbar) {
       db.on('error', function(err) {
         alert(err);
       });
-      $scope.keys('*');
+      if (result.password) {
+        console.log('auth')
+        db.auth(result.password, function(err) {
+          $scope.keys('*');
+        });
+      } else {
+        console.log('no auth')
+        $scope.keys('*');
+      }
     });
   };
   $scope.status = {

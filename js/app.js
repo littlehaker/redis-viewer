@@ -1,6 +1,5 @@
 'use strict';
 
-// Declare app level module which depends on filters, and services
 angular.module('RedisViewer', [
   'RedisViewer.filters',
   'RedisViewer.services',
@@ -13,9 +12,15 @@ angular.module('RedisViewer', [
       $routeProvider.when('/', {
         templateUrl: 'partials/main.html',
         controller: 'MainCtrl'
-      });
-      // $routeProvider.when('/', {templateUrl: 'partials/connect.html', controller: 'ConnectCtrl'});
-      // $routeProvider.otherwise({redirectTo: '/'});
+      }).when('/about', {
+        templateUrl: 'partials/about.html',
+      })
+      // .when('/', {
+      //   templateUrl: 'partials/connect.html',
+      //   controller: 'ConnectCtrl'
+      // }).otherwise({
+      //   redirectTo: '/'
+      // });
     }
   ])
 // .run(["$rootScope", "redis", function($rootScope, redis) {

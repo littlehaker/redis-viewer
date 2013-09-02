@@ -1,6 +1,6 @@
-body {
+/*body {
   padding: 20px;
-}
+}*/
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
@@ -12,4 +12,25 @@ body {
 }
 .table {
   table-layout:fixed;
+}
+.west, .east {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /*padding: 20px;*/
+  /*overflow-y: auto;*/
+}
+.sidebar {
+  width: 360px;
+}
+.tabbable {
+  left: 400px;
+}
+.keys {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 150px;
+  overflow-y: auto;
 }
