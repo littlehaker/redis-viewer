@@ -43,11 +43,14 @@ angular.module('RedisViewer.controllers', [
       d.open().then(function(result) {
         var db = $scope.db = Redis.createClient(result.port, result.host, result);
         db.on('error', function(err) {
+          console.log(err);
           alert(err);
         });
         if (result.password) {
+          // TODO: do sth when auth failed.
           console.log('auth');
-          db.auth(result.password, function(err) {
+          db.auth(result.password, function(err, reply) {
+            // console.log(err, reply);
             $scope.keys('*');
           });
         } else {
@@ -64,7 +67,8 @@ angular.module('RedisViewer.controllers', [
       string: 'get $key',
       hash: 'hgetall $key',
       set: 'smembers $key',
-      zset: 'zrange $key 0 -1 withscores',
+      // zset: 'zrange $key 0 -1 withscores',
+      zset: 'zrange $key 0 -1',
       list: 'lrange $key 0 -1'
     };
     $scope.keys_tree = [];
@@ -130,7 +134,12 @@ angular.module('RedisViewer.controllers', [
         progressbar.start();
         // $scope.send_command('type ' + key);
         $scope.db.type(key, function(err, type) {
-          var command = type_cmd_map[type].replace('$key', key);
+          try{
+            var command = type_cmd_map[type].replace('$key', key);
+          } catch(e) {
+            console.log('type is '+type);
+            return;
+          }
           send_command(command, function(err, reply) {
             progressbar.complete();
             $scope.$apply(function() {

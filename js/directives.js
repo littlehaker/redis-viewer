@@ -4,13 +4,26 @@
 
 
 angular.module('RedisViewer.directives', []).
-directive('appVersion', ['version',
-  function(version) {
-    return function(scope, elm, attrs) {
-      elm.text(version);
-    };
-  }
-]).directive('abnTree', function($timeout) {
+directive('xeditable', function($timeout) {
+  return {
+    restrict: 'A',
+    require: "ngModel",
+    link: function(scope, element, attrs, ngModel) {
+      var loadXeditable = function() {
+        angular.element(element).editable({
+          display: function(value, srcData) {
+            ngModel.$setViewValue(value);
+            element.html(value);
+            scope.$apply();
+          }
+        });
+      }
+      $timeout(function() {
+        loadXeditable();
+      }, 10);
+    }
+  };
+}).directive('abnTree', function($timeout) {
   return {
     restrict: 'E',
     templateUrl: 'partials/abn_tree_template.html',
