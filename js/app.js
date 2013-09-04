@@ -14,7 +14,9 @@ angular.module('RedisViewer', [
         controller: 'MainCtrl'
       }).when('/about', {
         templateUrl: 'partials/about.html',
-      })
+      }).otherwise({
+        redirectTo: '/'
+      });
       // .when('/', {
       //   templateUrl: 'partials/connect.html',
       //   controller: 'ConnectCtrl'
