@@ -26,8 +26,8 @@ angular.module('RedisViewer.controllers', [
   function($scope) {
 
   }
-]).controller('MainCtrl', ['$scope', '$dialog', 'progressbar',
-  function($scope, $dialog, progressbar) {
+]).controller('MainCtrl', ['$scope', '$dialog', 'progressbar', '$q',
+  function($scope, $dialog, progressbar, $q) {
     // main controller
     progressbar.color('#29d');
     $scope.wildcard = '*';
@@ -134,10 +134,10 @@ angular.module('RedisViewer.controllers', [
         progressbar.start();
         // $scope.send_command('type ' + key);
         $scope.db.type(key, function(err, type) {
-          try{
+          try {
             var command = type_cmd_map[type].replace('$key', key);
-          } catch(e) {
-            console.log('type is '+type);
+          } catch (e) {
+            console.log('type is ' + type);
             return;
           }
           send_command(command, function(err, reply) {
@@ -209,8 +209,9 @@ angular.module('RedisViewer.controllers', [
           reply = [reply];
         }
         // console.log(reply);
-        $scope.reply = reply;
-        $scope.$digest();
+        $scope.$apply(function() {
+          $scope.reply = reply;
+        });
         // progressbar.complete();
       });
     };
@@ -222,6 +223,18 @@ angular.module('RedisViewer.controllers', [
         });
         $scope.keys('*');
       });
+    };
+    $scope.hmset = function(key, hash, value) {
+      // var dfd = $q.defer();
+      $scope.db.hmset(key, hash, value, function(err, reply) {
+        if(err){
+          // dfd.reject(err.toString());
+        } else {
+          // dfd.resolve(true);
+        }
+      });
+      // TODO 添加到log
+      // return dfd.promise;
     };
     $scope.showConnectDialog();
   }
@@ -244,7 +257,11 @@ angular.module('RedisViewer.controllers', [
   }
 ]).controller('KeysCtrl', ['$scope',
   function($scope) {
-    $scope.dbs = [0, 1, 2, 3];
+    var dbs = [];
+    for (var i = 0; i <= 10; i++) {
+      dbs.push(i);
+    }
+    $scope.dbs = dbs;
   }
 ]).controller('CmdCtrl', ['$scope',
   function($scope) {

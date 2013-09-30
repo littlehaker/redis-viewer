@@ -1,8 +1,6 @@
 'use strict';
 
 /* Directives */
-
-
 angular.module('RedisViewer.directives', []).
 directive('xeditable', function($timeout) {
   return {

@@ -5,8 +5,12 @@ angular.module('RedisViewer', [
   'RedisViewer.services',
   'RedisViewer.directives',
   'RedisViewer.controllers',
-  'ngRoute'
+  'ngRoute',
+  'xeditable'
 ])
+  .run(function(editableOptions) {
+    editableOptions.theme = 'bs2';
+  })
   .config(['$routeProvider',
     function($routeProvider) {
       $routeProvider.when('/', {

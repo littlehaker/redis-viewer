@@ -69,6 +69,27 @@
       <div ng-switch-when="string">
         {{reply}}
       </div>
+      <div ng-switch-when="hash">
+        <table class="table table-hover">
+          <thead>
+            <th>key</th>
+            <th>value</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(hash, value) in reply track by $index">
+              <td class="break">{{hash}}</td>
+              <td class="break" title="{{value}}">
+                <span editable-textarea="value" e-rows="7" e-cols="40" e-form="valueForm" onbeforesave="hmset(key, hash, $data)">{{value}}</span>
+              </td>
+              <td>
+                <a href="javascript:;" ng-click="valueForm.$show()">Edit</a>
+                <a href="javascript:;">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div ng-switch-default>
         <table class="table">
           <thead>
