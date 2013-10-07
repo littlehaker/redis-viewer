@@ -1,7 +1,5 @@
 <div ng-controller="KeysCtrl" class="sidebar west clearfix">
 
-
-
   <div>
     <br>
     &nbsp;&nbsp;
@@ -18,45 +16,17 @@
     </div>
     <br>
   </div>
-<!--   <form ng-submit="keys(wildcard)">
-    Keys:
-    <input type="text" ng-model="wildcard" />
-    <button class="btn btn-primary">
-      Go!
-    </button>
-  </form> -->
-  <!-- {{status.keys.length}} keys -->
+
   <abn-tree header="{{keys.length}} Keys" tree-data="keys_tree" icon-leaf="icon-file" on-select="showKey(branch.data.key)" expand-level="0" initial-selection="" class="keys"></abn-tree>
 
-  <!--  <div class="keys">
-    <ul class="nav nav-tabs nav-stacked">
-      <li ng-repeat="key in status.keys">
-        <a href="javascript:;" class="ellipsis" title="{{key}}" ng-click="send_command(key.cmd)">
-        {{key.hash}}
-        <br />
-        {{key.type}}/
-              <span title="{{key.ttl}} second">{{key.ttl | ttl}}</span>
-
-      </a>
-      </li>
-    </ul>
-  </div> -->
 </div>
 
-<!-- <div ng-hide="type" class="east">click</div> -->
 <div ng-show="type">
 <tabset class="tabbable east">
   <tab>
     <tab-heading>
       <i class="icon-th"></i> Results
     </tab-heading>
-<!--     <div ng-controller="CmdCtrl">
-      <input type="text" name="command" ng-model="cmd_str" />
-      <br />
-      <button class="btn btn-primary" ng-click="send_command(cmd_str)">
-        Go!
-      </button>
-    </div> -->
 
     <dl class="dl-horizontal">
       <dt>Key</dt>
