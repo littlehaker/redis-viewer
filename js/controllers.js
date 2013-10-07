@@ -50,7 +50,6 @@ angular.module('RedisViewer.controllers', [
           // TODO: do sth when auth failed.
           console.log('auth');
           db.auth(result.password, function(err, reply) {
-            // console.log(err, reply);
             $scope.keys('*');
           });
         } else {
@@ -82,43 +81,8 @@ angular.module('RedisViewer.controllers', [
             $scope.keys_tree = keys_tree;
           });
         });
-
-
-        // var type_promises = [];
-        // _.forEach(keys, function(key) {
-        //   type_promises.push(Q.ninvoke($scope.db, 'type', key));
-        // });
-        // var ttl_promises = [];
-        // _.forEach(keys, function(key) {
-        //   ttl_promises.push(Q.ninvoke($scope.db, 'ttl', key));
-        // });
-        // Q.all([
-        //   Q.all(type_promises),
-        //   Q.all(ttl_promises)
-        // ]).done(function(results) {
-        //   var types = results[0];
-        //   var ttls = results[1];
-        //   var objs = [];
-        //   for (var i in keys) {
-        //     objs.push({
-        //       hash: keys[i],
-        //       type: types[i],
-        //       ttl: ttls[i],
-        //       cmd: type_cmd_map[types[i]].replace('$key', keys[i])
-        //     });
-        //   }
-        //   $scope.status.keys = objs;
-        //   $scope.$digest();
-        //   progressbar.complete();
-        // });
       });
     };
-
-    // $scope.tree_click = function(branch){
-    //   if(branch.data.key){
-    //     $scope.showKey(branch.data.key);
-    //   }
-    // }
 
     function send_command(cmd_str, callback) {
       var args = cmd_str.split(' ');
@@ -201,18 +165,15 @@ angular.module('RedisViewer.controllers', [
 
     // TODO: wrap send_command with a log info.
     $scope.send_command = function(cmd_str) {
-      // progressbar.start();
       $scope.logs.push(cmd_str);
       send_command(cmd_str, function(err, reply) {
 
         if (typeof reply === 'string') {
           reply = [reply];
         }
-        // console.log(reply);
         $scope.$apply(function() {
           $scope.reply = reply;
         });
-        // progressbar.complete();
       });
     };
     $scope.showdb = function showdb(db) {
@@ -225,16 +186,12 @@ angular.module('RedisViewer.controllers', [
       });
     };
     $scope.hmset = function(key, hash, value) {
-      // var dfd = $q.defer();
       $scope.db.hmset(key, hash, value, function(err, reply) {
         if(err){
-          // dfd.reject(err.toString());
         } else {
-          // dfd.resolve(true);
         }
       });
       // TODO 添加到log
-      // return dfd.promise;
     };
     $scope.showConnectDialog();
   }
